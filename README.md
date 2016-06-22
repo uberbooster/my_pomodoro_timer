@@ -11,8 +11,8 @@ I am building a timer web application using:
 #As a user...
   1. I see a timer of 25 mins.
   2. I see a 'start work' button that starts the timer countdown.
-  3. I see a 'pause' button that pauses the timer.
-  4. I see a 'reset' button that resets the timer.
+  3. I see a 'pause' button that pauses the timer, but is disabled.
+  4. I see a 'reset' button that resets the timer, but is disabled.
   5. I see a 'short break' button that is disabled.
   6. I see a 'long break' button that is disabled.
   7. When I click the 'start work' button, the timer starts counting down to 0.
