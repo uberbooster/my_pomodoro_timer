@@ -1,4 +1,3 @@
-var func;
 $.fn.hasAttr = function(name) {
    return (typeof this.attr(name) !== 'undefined' && this.attr(name) !== false);
 };
@@ -12,6 +11,7 @@ $(document).ready(function(){
   var longBreakBtn = $('#long-break');
   var minutes = $('#minutes');
   var seconds = $('#seconds');
+  var countdown;
   var pause = 0;
   var working = 0;
   var onShortBreak = 0;
@@ -35,7 +35,8 @@ $(document).ready(function(){
     onLongBreak = 0;
     workSessions = workSessions + 1;
     minutes.text('00');
-    seconds.text('04')
+    seconds.text('05')
+    console.log("start clicked: " + working +" "+ onShortBreak +" "+ workSessions +" "+ shortBreakSessions +" "+ onLongBreak +" "+ pomodoros);
     checkButtonStatus();
     startCountdown();
   };
@@ -44,6 +45,7 @@ $(document).ready(function(){
     if (pause === 0){ // if pause = 0 it means the pause button was clicked.  If pause = 1 it means the resume button was clicked
       pause = 1; // sets the pause variable flag to 1, which will clear the interval (stop the clock) in the startCountdown function
       pauseBtn.text('Resume'); // changes the text on the pause button to resume
+      clearInterval(countdown);
     } else {  // this only executes if the resume button is clicked
       pause = 0; // sets the pause button flag to 0, meaning the user wants to resume the timer
       pauseBtn.text('Pause'); // changes the text on the resume button to pause
@@ -52,21 +54,30 @@ $(document).ready(function(){
   };
 
   function shortBreakButtonClicked(){
-    onShortBreak = 1; // flags that the short break button was clicked
+    working = 0;
+    onShortBreak = 1;
+    onLongBreak = 0;
     shortBreakSessions = shortBreakSessions + 1;
+    pomodoros = pomodoros + 1;
     minutes.text('00'); // sets minutes to 5
-    seconds.text('05'); // sets seconds to 00
-    startCountdown(); // starts the countdown
+    seconds.text('03'); // sets seconds to 00
+    console.log("short clicked: " + working +" "+ onShortBreak +" "+ workSessions +" "+ shortBreakSessions +" "+ onLongBreak +" "+ pomodoros);
+    checkButtonStatus();
+    startCountdown();
   };
 
   function longBreakButtonClicked(){
+    working = 0;
+    onShortBreak = 0;
     onLongBreak = 1;
-    longBreakSessions = longBreakSessions + 1;
     minutes.text('00'); // sets minutes to 5
-    seconds.text('06'); // sets seconds to 00
-    longBreakBtn.addClass("disabled");
-    longBreakBtn.attr("disabled",'disabled');
-    startCountdown(); // starts the countdown
+    seconds.text('04'); // sets seconds to 00
+    console.log("long clicked: " + working +" "+ onShortBreak +" "+ workSessions +" "+ shortBreakSessions +" "+ onLongBreak +" "+ pomodoros);
+    checkButtonStatus();
+    workSessions=0;
+    shortBreakSessions=0;
+    pomodoros = 0;
+    startCountdown();
   };
 
   function resetButtonClicked(){
@@ -80,36 +91,32 @@ $(document).ready(function(){
     shortBreakSessions = 0;
     longBreakSessions = 0;
     minutes.text('00');
-    seconds.text('07');
+    seconds.text('05');
     setButtonsToWaitingToWork();
     document.getElementsByTagName("TITLE")[0].innerHTML = "25:00 Pomodoro Timer"  // this puts the timer in the title tab
   };
 
-
-
-
-
   function checkButtonStatus(){
-    if (reset === 1){
-        reset = 0;
-        setButtonsToWaitingToWork();
-    } else {
-      if (working === 0 && onShortBreak === 0 && workingSessions === 0 && shortBreakSessions === 0 && onLongBreak === 0 && pomodoros === 0){ //this means the person is currently working
-        // set buttons for working status
-        //
-      } else {
-        if (working === 1 && onShortBreak === 1 && pomodoros < 3){
-          // set buttons for a short break
-        } else {
-          if(working === 1 && onShortBreak === 0 && pomodoros ===3){
-            // set buttons for working status, but prepare longBreakBtn to be enabled
-          } else {
+    if (reset === 1){reset = 0; setButtonsToWaitingToWork();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 0 && shortBreakSessions === 0 && onLongBreak === 0 && pomodoros === 0){setButtonsToWaitingToWork();
+    } else {if (working === 1 && onShortBreak === 0 && workSessions === 1 && shortBreakSessions === 0 && onLongBreak === 0 && pomodoros === 0){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 1 && shortBreakSessions === 0 && onLongBreak === 0 && pomodoros === 0){setButtonsToWaitingForShortBreak();
+    } else {if (working === 0 && onShortBreak === 1 && workSessions === 1 && shortBreakSessions === 1 && onLongBreak === 0 && pomodoros === 1){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 1 && shortBreakSessions === 1 && onLongBreak === 0 && pomodoros === 1){setButtonsToWaitingToWork();
+    } else {if (working === 1 && onShortBreak === 0 && workSessions === 2 && shortBreakSessions === 1 && onLongBreak === 0 && pomodoros === 1){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 2 && shortBreakSessions === 1 && onLongBreak === 0 && pomodoros === 1){setButtonsToWaitingForShortBreak();
+    } else {if (working === 0 && onShortBreak === 1 && workSessions === 2 && shortBreakSessions === 2 && onLongBreak === 0 && pomodoros === 2){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 2 && shortBreakSessions === 2 && onLongBreak === 0 && pomodoros === 2){setButtonsToWaitingToWork();
+    } else {if (working === 1 && onShortBreak === 0 && workSessions === 3 && shortBreakSessions === 2 && onLongBreak === 0 && pomodoros === 2){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 3 && shortBreakSessions === 2 && onLongBreak === 0 && pomodoros === 2){setButtonsToWaitingForShortBreak();
+    } else {if (working === 0 && onShortBreak === 1 && workSessions === 3 && shortBreakSessions === 3 && onLongBreak === 0 && pomodoros === 3){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 3 && shortBreakSessions === 3 && onLongBreak === 0 && pomodoros === 3){setButtonsToWaitingToWork();
+    } else {if (working === 1 && onShortBreak === 0 && workSessions === 4 && shortBreakSessions === 3 && onLongBreak === 0 && pomodoros === 3){setButtonsToTimerRunning();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 4 && shortBreakSessions === 3 && onLongBreak === 0 && pomodoros === 3){setButtonsToWaitingForLongBreak();
+    } else {if (working === 0 && onShortBreak === 0 && workSessions === 4 && shortBreakSessions === 3 && onLongBreak === 1 && pomodoros === 3){setButtonsToTimerRunning();
+    } else {console.log("ERROR: " + working +" "+ onShortBreak +" "+ workSessions +" "+ shortBreakSessions +" "+ onLongBreak +" "+ pomodoros);}
+    }}}}}}}}}}}}}}}}
 
-          }
-
-        }
-      }
-    }
   };
 
 
@@ -135,7 +142,6 @@ $(document).ready(function(){
     if (!longBreakBtn.hasClass("disabled")){longBreakBtn.addClass("disabled")};
     if (!longBreakBtn.hasAttr("disabled")){longBreakBtn.attr("disabled",'disabled')};
   };
-  func = setButtonsToWaitingForLongBreak;
 
   function setButtonsToWaitingForShortBreak(){
     if (!pauseBtn.hasClass("disabled")){pauseBtn.addClass("disabled")};
@@ -165,15 +171,15 @@ $(document).ready(function(){
   function startCountdown(){
     pauseBtn.removeClass('disabled'); // enables the pause button
     pauseBtn.removeAttr('disabled');
-    clearInerval(coundown);
-    var countdown = setInterval(function(){
+    countdown = setInterval(function(){
       var secondsVal = +seconds.text(); // the + sign makes this behave like a number
       var minutesVal = +minutes.text();
-      if(pause === 1){ // checks to see if the pause button was clicked
-        clearInterval(countdown);
-      };
       if ((secondsVal === 0 && minutesVal ===0) || reset === 1){ // the timer has run down to 00:00 or the reset button was clicked
         clearInterval(countdown);
+        working = 0;
+        onShortBreak = 0;
+        onLongBreak = 0;
+        console.log("coundown ended: " + working +" "+ onShortBreak +" "+ workSessions +" "+ shortBreakSessions +" "+ onLongBreak +" "+ pomodoros);
         checkButtonStatus();
         return;
       };
