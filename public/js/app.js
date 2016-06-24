@@ -44,11 +44,11 @@ $(document).ready(function(){
   function pauseButtonClicked(){ // this function only runs when the pause button is clicked (or the resume button)
     if (pause === 0){ // if pause = 0 it means the pause button was clicked.  If pause = 1 it means the resume button was clicked
       pause = 1; // sets the pause variable flag to 1, which will clear the interval (stop the clock) in the startCountdown function
-      pauseBtn.text('Resume'); // changes the text on the pause button to resume
+      pauseBtn.text('> Resume'); // changes the text on the pause button to resume
       clearInterval(countdown);
     } else {  // this only executes if the resume button is clicked
       pause = 0; // sets the pause button flag to 0, meaning the user wants to resume the timer
-      pauseBtn.text('Pause'); // changes the text on the resume button to pause
+      pauseBtn.text('|| Pause'); // changes the text on the resume button to pause
       startCountdown(); // runs the startCountdown function, which continues the timer
     };
   };
