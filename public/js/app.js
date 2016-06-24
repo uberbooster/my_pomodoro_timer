@@ -93,7 +93,7 @@ $(document).ready(function(){
     minutes.text('00');
     seconds.text('05');
     setButtonsToWaitingToWork();
-    document.getElementsByTagName("TITLE")[0].innerHTML = "25:00 Pomodoro Timer"  // this puts the timer in the title tab
+    document.getElementsByTagName("TITLE")[0].innerHTML = minutes.text()+":"+seconds.text()+" Pomodoro Timer"  // this puts the timer in the title tab
   };
 
   function checkButtonStatus(){
