@@ -176,6 +176,10 @@ $(document).ready(function(){
       var minutesVal = +minutes.text();
       if ((secondsVal === 0 && minutesVal ===0) || reset === 1){ // the timer has run down to 00:00 or the reset button was clicked
         clearInterval(countdown);
+        if (reset !== 1){
+          $(".audioDing").trigger('load');
+          $(".audioDing").trigger('play');
+        }
         working = 0;
         onShortBreak = 0;
         onLongBreak = 0;
