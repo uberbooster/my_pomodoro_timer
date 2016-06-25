@@ -81,18 +81,20 @@ $(document).ready(function(){
   };
 
   function resetButtonClicked(){
-    reset = 1;
     pause = 0;
     working = 0;
     onShortBreak = 0;
     onLongBreak = 0;
+    reset = 1;
     pomodoros = 0;
     workSessions = 0;
     shortBreakSessions = 0;
     longBreakSessions = 0;
+    clearInterval(countdown);
+    pauseBtn.text('|| Pause');
     minutes.text('00');
     seconds.text('05');
-    setButtonsToWaitingToWork();
+    checkButtonStatus();
     document.getElementsByTagName("TITLE")[0].innerHTML = minutes.text()+":"+seconds.text()+" Pomodoro Timer"  // this puts the timer in the title tab
   };
 
@@ -169,8 +171,8 @@ $(document).ready(function(){
 
 
   function startCountdown(){
-    pauseBtn.removeClass('disabled'); // enables the pause button
-    pauseBtn.removeAttr('disabled');
+    //pauseBtn.removeClass('disabled'); // enables the pause button
+    //pauseBtn.removeAttr('disabled');
     countdown = setInterval(function(){
       var secondsVal = +seconds.text(); // the + sign makes this behave like a number
       var minutesVal = +minutes.text();
